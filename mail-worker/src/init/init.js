@@ -352,10 +352,10 @@ const dbInit = {
 		try {
 			await c.env.d1.prepare(`
         INSERT INTO perm (perm_id, name, perm_key, pid, type, sort) VALUES
-        (33,'娉ㄥ唽瀵嗛挜', NULL, 0, 1, 5.1),
-        (34,'瀵嗛挜鏌ョ湅', 'reg-key:query', 33, 2, 0),
-        (35,'瀵嗛挜娣诲姞', 'reg-key:add', 33, 2, 1),
-        (36,'瀵嗛挜鍒犻櫎', 'reg-key:delete', 33, 2, 2)`).run();
+        (33,'Reg Key', NULL, 0, 1, 5.1),
+        (34,'View Reg Key', 'reg-key:query', 33, 2, 0),
+        (35,'Add Reg Key', 'reg-key:add', 33, 2, 1),
+        (36,'Delete Reg Key', 'reg-key:delete', 33, 2, 2)`).run();
 		} catch (e) {
 			console.warn(`璺宠繃鏁版嵁锛?{e.message}`);
 		}
@@ -515,27 +515,27 @@ const dbInit = {
         (2, '閭欢鍒犻櫎', 'email:delete', 1, 2, 1),
         (3, 'Send Email', 'email:send', 1, 2, 0),
         (4, '涓汉璁剧疆', '', 0, 1, 2),
-        (5, '鐢ㄦ埛娉ㄩ攢', 'my:delete', 4, 2, 0),
-        (6, '鐢ㄦ埛淇℃伅', NULL, 0, 1, 3),
-        (7, '鐢ㄦ埛鏌ョ湅', 'user:query', 6, 2, 0),
+        (5, 'Delete My Account', 'my:delete', 4, 2, 0),
+        (6, 'User', NULL, 0, 1, 3),
+        (7, 'View User', 'user:query', 6, 2, 0),
         (8, '瀵嗙爜淇敼', 'user:set-pwd', 6, 2, 2),
         (9, 'Set Status', 'user:set-status', 6, 2, 3),
         (10, '鏉冮檺淇敼', 'user:set-type', 6, 2, 4),
-        (11, '鐢ㄦ埛鍒犻櫎', 'user:delete', 6, 2, 7),
-        (12, '鐢ㄦ埛鏀惰棌', 'user:star', 6, 2, 5),
-        (13, '鏉冮檺鎺у埗', '', 0, 1, 5),
+        (11, 'Delete User', 'user:delete', 6, 2, 7),
+        (12, 'Star User', 'user:star', 6, 2, 5),
+        (13, 'Roles', '', 0, 1, 5),
         (14, '韬唤鏌ョ湅', 'role:query', 13, 2, 0),
         (15, '韬唤淇敼', 'role:set', 13, 2, 1),
         (16, '韬唤鍒犻櫎', 'role:delete', 13, 2, 2),
-        (17, '绯荤粺璁剧疆', '', 0, 1, 6),
-        (18, '璁剧疆鏌ョ湅', 'setting:query', 17, 2, 0),
+        (17, 'System', '', 0, 1, 6),
+        (18, 'View Setting', 'setting:query', 17, 2, 0),
         (19, '璁剧疆淇敼', 'setting:set', 17, 2, 1),
         (21, '閭渚ф爮', '', 0, 0, 1),
         (22, '閭鏌ョ湅', 'account:query', 21, 2, 0),
         (23, '閭娣诲姞', 'account:add', 21, 2, 1),
         (24, '閭鍒犻櫎', 'account:delete', 21, 2, 2),
-        (25, '鐢ㄦ埛娣诲姞', 'user:add', 6, 2, 1),
-        (26, '鍙戜欢閲嶇疆', 'user:reset-send', 6, 2, 6),
+        (25, 'Add User', 'user:add', 6, 2, 1),
+        (26, 'Reset Send', 'user:reset-send', 6, 2, 6),
         (27, '閭欢鍒楄〃', '', 0, 1, 4),
         (28, '閭欢鏌ョ湅', 'all-email:query', 27, 2, 0),
         (29, '閭欢鍒犻櫎', 'all-email:delete', 27, 2, 0),
