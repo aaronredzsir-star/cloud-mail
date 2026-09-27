@@ -94,7 +94,8 @@ const route = useRoute();
   justify-content: center;
   gap: 5px;
   color: #ffffff;
-  background: linear-gradient(135deg, #1890ff, #3a80dd);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3), 0 2px 4px -1px rgba(59, 130, 246, 0.2);
   transition: all 0.3s ease;
   max-width: 240px;
   padding: 0 10px;
@@ -128,8 +129,8 @@ const route = useRoute();
 }
 
 .el-menu-item {
-  margin: 3px 10px !important;
-  border-radius: 6px;
+  margin: 4px 12px !important;
+  border-radius: 8px;
   height: 36px;
   padding: 10px !important;
 }
