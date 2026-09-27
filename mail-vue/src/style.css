@@ -106,23 +106,29 @@ button, input, select, textarea {
 }
 
 :root {
-    --el-color-primary: #1890ff;
-    --el-color-primary-dark-2: #1064c0;
-    --el-color-primary-light-3: #4dabff;
-    --el-color-primary-light-5: #69c0ff;
-    --el-color-primary-light-7: #91d5ff;
-    --el-color-primary-light-9: #e6f7ff;
+    --el-color-primary: #3b82f6;
+    --el-color-primary-dark-2: #2563eb;
+    --el-color-primary-light-3: #60a5fa;
+    --el-color-primary-light-5: #93c5fd;
+    --el-color-primary-light-7: #bfdbfe;
+    --el-color-primary-light-9: #eff6ff;
+
+    --el-border-radius-base: 8px;
+    --el-border-radius-small: 6px;
+    --el-border-color: #e2e8f0;
+    --el-bg-color-page: #f8fafc;
+    --el-border-color-light: #cbd5e1;
 
     --extra-light-fill: #FAFCFF;
     --settings-page-background: #fafbfc;
     --light-ill: #F5F7FA;
     --light-border: #E4E7ED;
     --header-actions-border: inset 0 -1px 0 0 var(--el-border-color-lighter);
-    --aside-backgound: #191A23;
-    --aside-menu-active-background: #27282D;
+    --aside-backgound: #0f172a;
+    --aside-menu-active-background: rgba(255, 255, 255, 0.1);
     --loadding-background: rgba(255, 255, 255, 0.8);
     --dark-border: #CDD0D6;
-    --base-fill: #F0F2F5;
+    --base-fill: #f1f5f9;
     --regular-text-color: #585d69;
     --light-border-color: #e7e9ec;
     --aside-right-border: 3px 0 5px rgba(0, 21, 41, .35);
@@ -150,8 +156,8 @@ button, input, select, textarea {
     --settings-page-background: var(--extra-light-fill);
     --light-ill: #262727;
     --light-border: #414243;
-    --aside-backgound: #141414;
-    --aside-menu-active-background: rgba(255, 255, 255, 0.08);
+    --aside-backgound: #020617;
+    --aside-menu-active-background: rgba(255, 255, 255, 0.05);
     --header-actions-border: inset 0 -1px 0 0 var(--el-border-color-lighter);
     --loadding-background: rgba(0, 0, 0, 0.3);
     --dark-border: #636466;
@@ -175,6 +181,17 @@ button, input, select, textarea {
 
 .el-input {
     --el-input-text-color: var(--el-text-color-primary) !important;
+    --el-input-border-radius: 8px;
+}
+
+.el-table {
+    --el-table-border-color: transparent;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.el-table th.el-table__cell {
+    background-color: var(--base-fill) !important;
 }
 
 /* 视图过渡，基于径向剪裁 */
