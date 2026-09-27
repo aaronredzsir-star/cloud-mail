@@ -1,4 +1,4 @@
-﻿import orm from '../entity/orm';
+import orm from '../entity/orm';
 import { att } from '../entity/att';
 import { and, eq, isNull, inArray, desc } from 'drizzle-orm';
 import r2Service from './r2-service';
@@ -244,7 +244,7 @@ const attService = {
 			try {
 				await this.batchDelete(c, delKeyList);
 			} catch (e) {
-				console.error('鍒犻櫎闄勪欢鏂囦欢澶辫触锛?, e);
+				console.error('删除附件文件失败:', e);
 			}
 		}
 

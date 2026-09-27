@@ -1,4 +1,4 @@
-﻿import orm from '../entity/orm';
+import orm from '../entity/orm';
 import email from '../entity/email';
 import { emailListColumns, emailBriefColumns, EMAIL_LIST_TEXT_LEN } from '../lib/email-list-columns';
 import { attConst, emailConst, isDel, settingConst } from '../const/entity-const';
@@ -1048,7 +1048,7 @@ const emailService = {
 
 		const cutoff = dayjs().subtract(days, 'day').format('YYYY-MM-DD HH:mm:ss');
 		const excludeEmails = String(autoCleanExclude || '')
-			.split(/[,锛宂/)
+			.split(/[,，]/)
 			.map(item => item.trim())
 			.filter(Boolean);
 
