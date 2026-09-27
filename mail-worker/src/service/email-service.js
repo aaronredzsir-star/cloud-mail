@@ -1,4 +1,4 @@
-import orm from '../entity/orm';
+﻿import orm from '../entity/orm';
 import email from '../entity/email';
 import { emailListColumns, emailBriefColumns, EMAIL_LIST_TEXT_LEN } from '../lib/email-list-columns';
 import { attConst, emailConst, isDel, settingConst } from '../const/entity-const';
@@ -246,26 +246,26 @@ const emailService = {
 		return orm(c).insert(email).values({ ...params }).returning().get();
 	},
 
-	//邮件发送
+	//閭欢鍙戦€?
 	async send(c, params, userId) {
 
 		let {
-			accountId, //发送账号id
-			name, //发件人名字
-			sendType, //发件类型
-			emailId, //邮件id，如果是回复邮件会带
-			receiveEmail, //收件人邮箱
-			text, //邮件纯文本
-			content, //邮件内容
-			subject, //邮件标题
-			attachments = [] //附件
+			accountId, //鍙戦€佽处鍙穒d
+			name, //鍙戜欢浜哄悕瀛?
+			sendType, //鍙戜欢绫诲瀷
+			emailId, //閭欢id锛屽鏋滄槸鍥炲閭欢浼氬甫
+			receiveEmail, //鏀朵欢浜洪偖绠?
+			text, //閭欢绾枃鏈?
+			content, //閭欢鍐呭
+			subject, //閭欢鏍囬
+			attachments = [] //闄勪欢
 		} = params;
 
 		const { resendTokens, r2Domain, send, domainList } = await settingService.query(c);
 
 		let { imageDataList, html } = await attService.toImageUrlHtml(c, content);
 
-		//判断是否关闭发件功能
+		//鍒ゆ柇鏄惁鍏抽棴鍙戜欢鍔熻兘
 		if (send === settingConst.send.CLOSE) {
 			throw new BizError(t('disabledSend'), 403);
 		}
@@ -273,7 +273,7 @@ const emailService = {
 		const userRow = await userService.selectById(c, userId);
 		const roleRow = await roleService.selectById(c, userRow.type);
 
-		//判断接收方是不是全部为站内邮箱
+		//鍒ゆ柇鎺ユ敹鏂规槸涓嶆槸鍏ㄩ儴涓虹珯鍐呴偖绠?
 		const allInternal = receiveEmail.every(email => {
 			const domain = '@' + emailUtils.getDomain(email);
 			return domainList.includes(domain);
@@ -281,19 +281,19 @@ const emailService = {
 
 		if (c.env.admin !== userRow.email) {
 
-			//发件被禁用
+			//鍙戜欢琚鐢?
 			if (roleRow.sendType === 'ban') {
 				throw new BizError(t('bannedSend'), 403);
 			}
 
-			//发件被禁用
+			//鍙戜欢琚鐢?
 			if (roleRow.sendType === 'internal' && !allInternal) {
 				throw new BizError(t('onlyInternalSend'), 403);
 			}
 
 		}
 
-		//如果不是管理员，权限设置了发送次数
+		//濡傛灉涓嶆槸绠＄悊鍛橈紝鏉冮檺璁剧疆浜嗗彂閫佹鏁?
 		if (c.env.admin !== userRow.email && roleRow.sendCount) {
 
 			if (userRow.sendCount >= roleRow.sendCount) {
@@ -319,7 +319,7 @@ const emailService = {
 		}
 
 		if (c.env.admin !== userRow.email) {
-			//用户没有这个域名的使用权限
+			//鐢ㄦ埛娌℃湁杩欎釜鍩熷悕鐨勪娇鐢ㄦ潈闄?
 			if(!roleService.hasAvailDomainPerm(roleRow.availDomain, accountRow.email)) {
 				throw new BizError(t('noDomainPermSend'),403)
 			}
@@ -330,12 +330,12 @@ const emailService = {
 		const resendToken = resendTokens[domain];
 		const useCloudflareEmail = !!c.env.email;
 
-		//如果接收方存在站外邮箱，又没有发信服务
+		//濡傛灉鎺ユ敹鏂瑰瓨鍦ㄧ珯澶栭偖绠憋紝鍙堟病鏈夊彂淇℃湇鍔?
 		if (!useCloudflareEmail && !resendToken && !allInternal) {
 			throw new BizError(t('noSendProvider'));
 		}
 
-		//没有发件人名字自动截取
+		//娌℃湁鍙戜欢浜哄悕瀛楄嚜鍔ㄦ埅鍙?
 		if (!name) {
 			name = emailUtils.getName(accountRow.email);
 		}
@@ -344,7 +344,7 @@ const emailService = {
 			messageId: null
 		};
 
-		//如果是回复邮件
+		//濡傛灉鏄洖澶嶉偖浠?
 		if (sendType === 'reply') {
 
 			emailRow = await this.selectById(c, emailId);
@@ -357,7 +357,7 @@ const emailService = {
 
 		let sendResult = {};
 
-		//存在站外邮箱时，如果配置了 Cloudflare Email Service 就优先使用，否则使用 Resend
+		//瀛樺湪绔欏閭鏃讹紝濡傛灉閰嶇疆浜?Cloudflare Email Service 灏变紭鍏堜娇鐢紝鍚﹀垯浣跨敤 Resend
 		if (!allInternal) {
 
 			if (useCloudflareEmail) {
@@ -397,10 +397,10 @@ const emailService = {
 
 		imageDataList = imageDataList.map(item => ({...item, contentId: `<${item.contentId}>`}))
 
-		//把图片标签cid标签切换会通用url
+		//鎶婂浘鐗囨爣绛綾id鏍囩鍒囨崲浼氶€氱敤url
 		html = this.imgReplace(html, imageDataList, r2Domain);
 
-		//封装数据保存到数据库
+		//灏佽鏁版嵁淇濆瓨鍒版暟鎹簱
 		const emailData = {};
 		emailData.sendEmail = accountRow.email;
 		emailData.name = name;
@@ -426,15 +426,15 @@ const emailService = {
 			emailData.relation = emailRow.messageId;
 		}
 
-		//如果权限有发送次数增加用户发送次数
+		//濡傛灉鏉冮檺鏈夊彂閫佹鏁板鍔犵敤鎴峰彂閫佹鏁?
 		if (roleRow.sendCount && roleRow.sendType !== 'internal') {
 			await userService.incrUserSendCount(c, receiveEmail.length, userId);
 		}
 
-		//保存到数据库并返回结果
+		//淇濆瓨鍒版暟鎹簱骞惰繑鍥炵粨鏋?
 		const emailResult = await orm(c).insert(email).values(emailData).returning().get();
 
-		//保存内嵌附件
+		//淇濆瓨鍐呭祵闄勪欢
 		if (imageDataList.length > 0) {
 			if (imageDataList.length > 10) {
 				throw new BizError(t('imageAttLimit'));
@@ -442,7 +442,7 @@ const emailService = {
 			await attService.saveArticleAtt(c, imageDataList, userId, accountId, emailResult.emailId);
 		}
 
-		//保存普通附件
+		//淇濆瓨鏅€氶檮浠?
 		if (attachments?.length > 0) {
 			if (attachments.length > 10) {
 				throw new BizError(t('attLimit'));
@@ -453,7 +453,7 @@ const emailService = {
 		const attList = await attService.selectByEmailIds(c, [emailResult.emailId]);
 		emailResult.attList = attList;
 
-		//如果全是站内接收方，直接写入数据库
+		//濡傛灉鍏ㄦ槸绔欏唴鎺ユ敹鏂癸紝鐩存帴鍐欏叆鏁版嵁搴?
 		if (allInternal) {
 			await this.HandleOnSiteEmail(c, receiveEmail, emailResult, attList);
 		}
@@ -461,7 +461,7 @@ const emailService = {
 		const dateStr = dayjs().format('YYYY-MM-DD');
 		let daySendTotal = await c.env.kv.get(kvConst.SEND_DAY_COUNT + dateStr);
 
-		//记录每天发件次数统计
+		//璁板綍姣忓ぉ鍙戜欢娆℃暟缁熻
 		if (!daySendTotal) {
 			await c.env.kv.put(kvConst.SEND_DAY_COUNT + dateStr, JSON.stringify(receiveEmail.length), { expirationTtl: 60 * 60 * 24 });
 		} else  {
@@ -637,15 +637,15 @@ const emailService = {
 		return content;
 	},
 
-	//处理站内邮件发送
+	//澶勭悊绔欏唴閭欢鍙戦€?
 	async HandleOnSiteEmail(c, receiveEmail, sendEmailData, attList) {
 
 		const { noRecipient  } = await settingService.query(c);
 
-		//查询所有收件人账号信息
+		//鏌ヨ鎵€鏈夋敹浠朵汉璐﹀彿淇℃伅
 		let accountList = await orm(c).select().from(account).where(inArray(account.email, receiveEmail)).all();
 
-		// 对于含+未精确匹配的收件人，获取基础地址账号
+		// 瀵逛簬鍚?鏈簿纭尮閰嶇殑鏀朵欢浜猴紝鑾峰彇鍩虹鍦板潃璐﹀彿
 		const plusEmails = receiveEmail.filter(
 			e => e.includes('+') && !accountList.some(a => a.email === e)
 		);
@@ -663,19 +663,19 @@ const emailService = {
 			}
 		}
 
-		// 合并精确匹配和基础地址匹配的账号用于权限查询
+		// 鍚堝苟绮剧‘鍖归厤鍜屽熀纭€鍦板潃鍖归厤鐨勮处鍙风敤浜庢潈闄愭煡璇?
 		const allAccounts = [...accountList, ...baseAccounts];
 
-		//查询所有收件人权限身份
+		//鏌ヨ鎵€鏈夋敹浠朵汉鏉冮檺韬唤
 		const userIds = allAccounts.map(accountRow => accountRow.userId);
 		let roleList = await roleService.selectByUserIds(c, userIds);
 
-		//封装数据库准备保存到数据库
+		//灏佽鏁版嵁搴撳噯澶囦繚瀛樺埌鏁版嵁搴?
 		const emailDataList = [];
 
 		for (const email of receiveEmail) {
 
-			//把发件人邮件改成收件
+			//鎶婂彂浠朵汉閭欢鏀规垚鏀朵欢
 			const emailValues = {...sendEmailData}
 			emailValues.status = emailConst.status.RECEIVE;
 			emailValues.type = emailConst.type.RECEIVE;
@@ -685,16 +685,16 @@ const emailService = {
 
 			let accountRow = allAccounts.find(accountRow => accountRow.email === email);
 
-			// 精确匹配不到时回退到主地址（去掉 +tag）
+			// 绮剧‘鍖归厤涓嶅埌鏃跺洖閫€鍒颁富鍦板潃锛堝幓鎺?+tag锛?
 			if (!accountRow && email.includes('+')) {
 				const baseEmail = emailUtils.getBaseEmail(email);
 				accountRow = allAccounts.find(accountRow => accountRow.email === baseEmail);
 			}
 
-			//如果收件人存在就把邮件信息改成收件人的
+			//濡傛灉鏀朵欢浜哄瓨鍦ㄥ氨鎶婇偖浠朵俊鎭敼鎴愭敹浠朵汉鐨?
 			if (accountRow) {
 
-				//设置给收件人保存
+				//璁剧疆缁欐敹浠朵汉淇濆瓨
 				emailValues.userId = accountRow.userId;
 				emailValues.accountId = accountRow.accountId;
 				emailValues.type = emailConst.type.RECEIVE;
@@ -704,7 +704,7 @@ const emailService = {
 
 				let { banEmail, availDomain } = roleRow;
 
-				//如果收件人没有这个域名的使用权限和有邮件拦截，就把邮件改为拒收状态
+				//濡傛灉鏀朵欢浜烘病鏈夎繖涓煙鍚嶇殑浣跨敤鏉冮檺鍜屾湁閭欢鎷︽埅锛屽氨鎶婇偖浠舵敼涓烘嫆鏀剁姸鎬?
 				if (email !== c.env.admin) {
 
 					if (!roleService.hasAvailDomainPerm(availDomain, email)) {
@@ -721,13 +721,13 @@ const emailService = {
 
 			} else {
 
-				//设置无收件人邮件信息
+				//璁剧疆鏃犳敹浠朵汉閭欢淇℃伅
 				emailValues.userId = 0;
 				emailValues.accountId = 0;
 				emailValues.type = emailConst.type.RECEIVE;
 				emailValues.status = emailConst.status.NOONE;
 
-				//如果无人收件关闭改为拒收
+				//濡傛灉鏃犱汉鏀朵欢鍏抽棴鏀逛负鎷掓敹
 				if (noRecipient === settingConst.noRecipient.CLOSE) {
 					emailValues.status = emailConst.status.BOUNCED;
 					emailValues.message = `Recipient not found: <${email}>`;
@@ -739,14 +739,14 @@ const emailService = {
 
 		}
 
-		//保存邮件
+		//淇濆瓨閭欢
 		const receiveEmailList = emailDataList.filter(emailRow => emailRow.status === emailConst.status.RECEIVE || emailRow.status === emailConst.status.NOONE);
 
 		for (const emailData of receiveEmailList) {
 
 			const emailRow = await orm(c).insert(email).values(emailData).returning().get();
 
-			//设置附件保存
+			//璁剧疆闄勪欢淇濆瓨
 			for (const attRow of attList) {
 				const attValues = {...attRow};
 				attValues.emailId = emailRow.emailId;
@@ -763,7 +763,7 @@ const emailService = {
 
 		let status = emailConst.status.DELIVERED;
 		let message = ''
-		//如果有拒收邮件，就把发件人的邮件改成拒收
+		//濡傛灉鏈夋嫆鏀堕偖浠讹紝灏辨妸鍙戜欢浜虹殑閭欢鏀规垚鎷掓敹
 		if (bouncedEmail) {
 			const messageJson = { message: bouncedEmail.message };
 			message = JSON.stringify(messageJson);
@@ -931,7 +931,7 @@ const emailService = {
 			.leftJoin(user, eq(email.userId, user.userId))
 			.where(and(...filters));
 
-		// count 不搜用户时无需 join user
+		// count 涓嶆悳鐢ㄦ埛鏃舵棤闇€ join user
 		const queryCount = userEmail
 			? orm(c).select({ total: count() })
 				.from(email)
@@ -1024,14 +1024,14 @@ const emailService = {
 	},
 
 	async completeReceiveAll(c) {
-		// 用 EXISTS 走 status=6 部分索引 + account 主键；避免 IN (SELECT account_id FROM account) 触发全盘扫描
-		await c.env.db.prepare(
+		// 鐢?EXISTS 璧?status=6 閮ㄥ垎绱㈠紩 + account 涓婚敭锛涢伩鍏?IN (SELECT account_id FROM account) 瑙﹀彂鍏ㄧ洏鎵弿
+		await c.env.d1.prepare(
 			`UPDATE email
 			 SET status = ${emailConst.status.RECEIVE}
 			 WHERE status = ${emailConst.status.SAVING}
 			   AND EXISTS (SELECT 1 FROM account WHERE account.account_id = email.account_id)`
 		).run();
-		await c.env.db.prepare(
+		await c.env.d1.prepare(
 			`UPDATE email
 			 SET status = ${emailConst.status.NOONE}
 			 WHERE status = ${emailConst.status.SAVING}`
@@ -1048,7 +1048,7 @@ const emailService = {
 
 		const cutoff = dayjs().subtract(days, 'day').format('YYYY-MM-DD HH:mm:ss');
 		const excludeEmails = String(autoCleanExclude || '')
-			.split(/[,，]/)
+			.split(/[,锛宂/)
 			.map(item => item.trim())
 			.filter(Boolean);
 

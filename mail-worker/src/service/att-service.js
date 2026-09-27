@@ -1,4 +1,4 @@
-import orm from '../entity/orm';
+﻿import orm from '../entity/orm';
 import { att } from '../entity/att';
 import { and, eq, isNull, inArray, desc } from 'drizzle-orm';
 import r2Service from './r2-service';
@@ -59,7 +59,7 @@ const attService = {
 
 		for (const img of images) {
 
-			//邮件正文base64图片转cid附件
+			//閭欢姝ｆ枃base64鍥剧墖杞琧id闄勪欢
 			const src = img.getAttribute('src');
 			if (src && src.startsWith('data:image')) {
 				const file = fileUtils.base64ToFile(src);
@@ -81,7 +81,7 @@ const attService = {
 				imageDataList.push(attData);
 			}
 
-			//邮件正文站内图片转cid附件
+			//閭欢姝ｆ枃绔欏唴鍥剧墖杞琧id闄勪欢
 			if (src && (src.startsWith(domainUtils.toOssDomain(r2Domain)) || src.startsWith('attachments/'))) {
 
 				const cid = uuidv4().replace(/-/g, '')
@@ -113,11 +113,11 @@ const attService = {
 			}
 		}
 
-		//查询已有内嵌url图片信息
+		//鏌ヨ宸叉湁鍐呭祵url鍥剧墖淇℃伅
 		const keys = [...new Set(imageDataList.filter(item => !item.content).map(item => item.key))];
 		const dbImageList  = await this.selectOneByKeys(c, keys);
 
-		//设置给当前附件
+		//璁剧疆缁欏綋鍓嶉檮浠?
 		await Promise.all(imageDataList.map(async image => {
 			if (image.content) {
 				return;
@@ -220,7 +220,7 @@ const attService = {
 
 			sqlList.push(
 
-				c.env.db.prepare(
+				c.env.d1.prepare(
 					`SELECT a.key, a.att_id
 						FROM attachments a
 							   JOIN (SELECT key
@@ -232,11 +232,11 @@ const attService = {
 					).bind(value)
 			)
 
-			sqlList.push(c.env.db.prepare(`DELETE FROM attachments WHERE ${fieldName} = ?`).bind(value))
+			sqlList.push(c.env.d1.prepare(`DELETE FROM attachments WHERE ${fieldName} = ?`).bind(value))
 
 		});
 
-		const attListResult = await c.env.db.batch(sqlList);
+		const attListResult = await c.env.d1.batch(sqlList);
 
 		const delKeyList = attListResult.flatMap(r => r.results ? r.results.map(row => row.key) : []);
 
@@ -244,7 +244,7 @@ const attService = {
 			try {
 				await this.batchDelete(c, delKeyList);
 			} catch (e) {
-				console.error('删除附件文件失败：', e);
+				console.error('鍒犻櫎闄勪欢鏂囦欢澶辫触锛?, e);
 			}
 		}
 

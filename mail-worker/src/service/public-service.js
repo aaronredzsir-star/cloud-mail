@@ -1,4 +1,4 @@
-import BizError from '../error/biz-error';
+﻿import BizError from '../error/biz-error';
 import orm from '../entity/orm';
 import { v4 as uuidv4 } from 'uuid';
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
@@ -141,15 +141,15 @@ const publicService = {
 			const accountSql = `INSERT INTO account (email, name, user_id)
 			VALUES ('${email}', '${emailUtils.getName(email)}', 0);`;
 
-			userList.push(c.env.db.prepare(userSql));
-			userList.push(c.env.db.prepare(accountSql));
+			userList.push(c.env.d1.prepare(userSql));
+			userList.push(c.env.d1.prepare(accountSql));
 
 		}
 
-		userList.push(c.env.db.prepare(`UPDATE account SET user_id = (SELECT user_id FROM user WHERE user.email = account.email) WHERE user_id = 0;`))
+		userList.push(c.env.d1.prepare(`UPDATE account SET user_id = (SELECT user_id FROM user WHERE user.email = account.email) WHERE user_id = 0;`))
 
 		try {
-			await c.env.db.batch(userList);
+			await c.env.d1.batch(userList);
 		} catch (e) {
 			if(e.message.includes('SQLITE_CONSTRAINT')) {
 				throw new BizError(t('emailExistDatabase'))
