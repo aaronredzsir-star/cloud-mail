@@ -1,4 +1,4 @@
-﻿import settingService from '../service/setting-service';
+import settingService from '../service/setting-service';
 import emailUtils from '../utils/email-utils';
 import {emailConst} from "../const/entity-const";
 
@@ -448,8 +448,8 @@ const dbInit = {
 		try {
 			await c.env.d1.prepare(`
         INSERT INTO perm (perm_id, name, perm_key, pid, type, sort) VALUES
-        (31,'鍒嗘瀽椤?, NULL, 0, 1, 2.1),
-        (32,'鏁版嵁鏌ョ湅', 'analysis:query', 31, 2, 1)`).run();
+        (31,'Analytics', NULL, 0, 1, 2.1),
+        (32,'Data Query', 'analysis:query', 31, 2, 1)`).run();
 		} catch (e) {
 			console.warn(`璺宠繃鏁版嵁锛?{e.message}`);
 		}
@@ -519,7 +519,7 @@ const dbInit = {
         (6, '鐢ㄦ埛淇℃伅', NULL, 0, 1, 3),
         (7, '鐢ㄦ埛鏌ョ湅', 'user:query', 6, 2, 0),
         (8, '瀵嗙爜淇敼', 'user:set-pwd', 6, 2, 2),
-        (9, '鐘舵€佷慨鏀?, 'user:set-status', 6, 2, 3),
+        (9, 'Set Status', 'user:set-status', 6, 2, 3),
         (10, '鏉冮檺淇敼', 'user:set-type', 6, 2, 4),
         (11, '鐢ㄦ埛鍒犻櫎', 'user:delete', 6, 2, 7),
         (12, '鐢ㄦ埛鏀惰棌', 'user:star', 6, 2, 5),
