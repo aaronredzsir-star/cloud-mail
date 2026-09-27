@@ -513,7 +513,7 @@ const dbInit = {
         INSERT INTO perm (perm_id, name, perm_key, pid, type, sort) VALUES
         (1, '閭欢', NULL, 0, 0, 0),
         (2, '閭欢鍒犻櫎', 'email:delete', 1, 2, 1),
-        (3, '閭欢鍙戦€?, 'email:send', 1, 2, 0),
+        (3, 'Send Email', 'email:send', 1, 2, 0),
         (4, '涓汉璁剧疆', '', 0, 1, 2),
         (5, '鐢ㄦ埛娉ㄩ攢', 'my:delete', 4, 2, 0),
         (6, '鐢ㄦ埛淇℃伅', NULL, 0, 1, 3),
