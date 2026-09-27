@@ -266,9 +266,9 @@ const dbInit = {
 
 	async v1_6DB(c) {
 
-		const noticeContent = '鏈」鐩粎渚涘涔犱氦娴侊紝绂佹鐢ㄤ簬杩濇硶涓氬姟\n' +
-			'<br>\n' +
-			'璇烽伒瀹堝綋鍦版硶瑙勶紝浣滆€呬笉鎵挎媴浠讳綍娉曞緥璐ｄ换'
+		const noticeContent = ''
+
+
 
 		const ADD_COLUMN_SQL_LIST = [
 			`ALTER TABLE setting ADD COLUMN reg_verify_count INTEGER NOT NULL DEFAULT 1;`,
