@@ -568,7 +568,7 @@ const dbInit = {
         INSERT INTO role (
           role_id, name, key, create_time, sort, description, user_id, is_default, send_count, send_type, account_count
         ) VALUES (
-          1, '鏅€氱敤鎴?, NULL, '0000-00-00 00:00:00', 0, '鍙湁鏅€氫娇鐢ㄦ潈闄?, 0, 1, NULL, 'ban', 10
+          1, 'User', NULL, '0000-00-00 00:00:00', 0, 'Regular user', 0, 1, NULL, 'ban', 10
         )
       `).run();
 		}
